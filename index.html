@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+    <title>Document</title>
+    <style>
+        body{
+            background: #222;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            width: 50%;
+            white-space: pre;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <p class="code">// Clase Animal
+class Animal {
+constructor(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+    // Método para hacer sonido
+    makeSound() {
+        console.log(`${this.name} hace un sonido.`);
+    }
+}
+
+// Clase Perro que extiende de Animal
+class Dog extends Animal {
+    constructor(name, age, breed) {
+        super(name, age);
+        this.breed = breed;
+}
+        
+    // Método específico para Perro
+    bark() {
+        console.log(`${this.name} dice: ¡Guau, guau!`);
+    }
+}
+        
+// Función principal
+function main() {
+    const myDog = new Dog("Fido", 3, "Labrador");
+    myDog.makeSound();
+    myDog.bark();
+        
+    const animals = [
+        new Animal("Leonardo", 5),
+        new Animal("Michellangelo", 4),
+        new Animal("Donatello", 6)
+    ];
+        
+    animals.forEach(animal => {
+        animal.makeSound();
+    });
+}
+
+main();
+        
+    </p>
+</body>
+</html>

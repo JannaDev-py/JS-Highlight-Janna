@@ -1,0 +1,30 @@
+.code{
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+:root{
+    --highlight-keyword: #ff00ff;
+    --highlight-method: #00ffff;
+    --highlight-string: #ff0000;
+    --highlight-symbol: #00ff00;
+    --highlight-comment: #999999;
+    --highlight-function: #0000ff;
+}
+.highlight-keyword{
+    color: var(--highlight-keyword);
+}
+.highlight-method{
+    color: var(--highlight-method);
+}
+.highlight-string{
+    color: var(--highlight-string);
+}
+.highlight-symbol{
+    color: var(--highlight-symbol);
+}
+.highlight-comment{
+    color: var(--highlight-comment);
+}
+.highlight-function{
+    color: var(--highlight-function);
+}
