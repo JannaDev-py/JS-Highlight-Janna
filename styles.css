@@ -2,14 +2,16 @@
     white-space: pre-wrap;
     font-family: monospace;
 }
-:root{
-    --highlight-keyword: #ff00ff;
-    --highlight-method: #00ffff;
-    --highlight-string: #ff0000;
-    --highlight-symbol: #00ff00;
-    --highlight-comment: #999999;
-    --highlight-function: #0000ff;
+
+:root {
+    --highlight-keyword: #33ff77;  
+    --highlight-method: #00ffff;    
+    --highlight-string: #00cc66;    
+    --highlight-symbol: #66ffcc;    
+    --highlight-comment: #aabbcc;   
+    --highlight-function: #009933;  
 }
+
 .highlight-keyword{
     color: var(--highlight-keyword);
 }

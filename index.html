@@ -26,51 +26,43 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <p class="code">// Clase Animal
+    <p class="code">
+// Función para sumar dos números
+function sumar(a, b) {
+    return a + b;
+}
+
+// Uso de la función sumar
+const resultado = sumar(5, 3);
+console.log("El resultado de la suma es:", resultado);
+
+// Ejemplo de un objeto en JavaScript
+const persona = {
+    nombre: "Juan",
+    edad: 30,
+    saludar: function() {
+        console.log("Hola, soy " + this.nombre);
+    }
+};
+
+// Llamada al método saludar del objeto persona
+persona.saludar();
+
+// Uso de una clase en JavaScript
 class Animal {
-constructor(name, age) {
-    this.name = name;
-    this.age = age;
-}
+    constructor(nombre) {
+        this.nombre = nombre;
+    }
 
-    // Método para hacer sonido
-    makeSound() {
-        console.log(`${this.name} hace un sonido.`);
+    hablar() {
+        console.log(this.nombre + " hace un sonido.");
     }
 }
 
-// Clase Perro que extiende de Animal
-class Dog extends Animal {
-    constructor(name, age, breed) {
-        super(name, age);
-        this.breed = breed;
-}
-        
-    // Método específico para Perro
-    bark() {
-        console.log(`${this.name} dice: ¡Guau, guau!`);
-    }
-}
-        
-// Función principal
-function main() {
-    const myDog = new Dog("Fido", 3, "Labrador");
-    myDog.makeSound();
-    myDog.bark();
-        
-    const animals = [
-        new Animal("Leonardo", 5),
-        new Animal("Michellangelo", 4),
-        new Animal("Donatello", 6)
-    ];
-        
-    animals.forEach(animal => {
-        animal.makeSound();
-    });
-}
-
-main();
-        
+// Crear una instancia de la clase Animal
+const miMascota = new Animal("Perro");
+miMascota.hablar();        
     </p>
+
 </body>
 </html>

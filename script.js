@@ -14,34 +14,33 @@ const keywords = [
 ];
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", ()=>{ updateCodeHighlight()});
+
+function updateCodeHighlight(){
     const code = document.querySelectorAll(".code"); //make an node list for all the code elements
     const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$]/g;   
-    const stringRegex = /(?<!<[^>]*)["'`](.*?)["'`]/g;
+    const stringRegex = /["'`](.*?)["'`]/g;
     const commentRegex = /\/\/.*/g;
 
-
     if(code){
-        code.forEach(async function(el){
+        code.forEach(function(el){
             //get all codes and highlight them
-            const keywordHTMLCodeHighlight = keywordHighlight(el);
+            const stringHTMLCodeHighlight = simpleHighlight(el.innerHTML, stringRegex, "string");
+            const keywordHTMLCodeHighlight = keywordHighlight(stringHTMLCodeHighlight);
             const methodHTMLCodeHighlight = methodHighlight(keywordHTMLCodeHighlight);
             const symbolHTMLCodeHighlight = simpleHighlight(methodHTMLCodeHighlight, symbolRegex, "symbol");
             const commentHTMLCodeHighlight = simpleHighlight(symbolHTMLCodeHighlight, commentRegex, "comment");
             el.innerHTML = commentHTMLCodeHighlight; 
-            
-            const stringHTMLCodeHighlight = simpleHighlight(symbolHTMLCodeHighlight, stringRegex, "string");
-
         })
     }
-});
+}
 
 //make functions that highlight the code by sections, per can search for the changes on each section
 function keywordHighlight(code){
-    let codeHTML = code.innerHTML;
+    let codeHTML = code;
     for(const keyword of keywords){
-        const regexKeyword = new RegExp(`(?<!\\{)\\b${keyword}\\b`, "g");
-        if(codeHTML.includes(keyword)){
+        const regexKeyword = new RegExp(`(?<!<[^>]*)\\b${keyword}\\b(?!([^<]*>))`, "g");
+                if(codeHTML.includes(keyword)){
             codeHTML = codeHTML.replace(regexKeyword, `<span class="highlight-keyword">${keyword}</span>`);
         }
     }
