@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", ()=>{ updateCodeHighlight()});
 
 function updateCodeHighlight(){
     const code = document.querySelectorAll(".code"); //make an node list for all the code elements
-    const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$]/g;   
+    const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$]|(&gt;)|(&lt;)/g;   // symbols "><" there no like that in the code are &gt; and &lt;
     const stringRegex = /["'`](.*?)["'`]/g;
     const commentRegex = /\/\/.*/g;
 
