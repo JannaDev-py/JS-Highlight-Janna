@@ -28,10 +28,12 @@ function updateCodeHighlight(){
                 const div = el.querySelector("div");
                 div.innerHTML = el.textContent;
                 div.innerHTML = setHighlight(div.textContent);
+                div.classList.add("highlighted-code");
                 
                 //what is being editable is the element that has the contenteditable attribute and we get that content constantly to put it highlighted on the div that show the code, because it works with a div that be behind the element and the principal element it is in front but with content color transparent, per shows only the div with the highlighted code
                 el.addEventListener("input", ()=>{
-                    const contentRegex =/((?:[^<]|<(?!div\b[^>]*>))*)/;
+                    //search for the content execept the highlighted-code class this we can search divs with br too
+                    const contentRegex = /((?:[^<]|<(?!\/?div\b[^>]*\bclass\s*=\s*["'].*?\bhighlighted-code\b.*?["'][^>]*>))*)/
                     const contentWithoutEditableDiv = el.innerHTML.match(contentRegex)[0];  
                     const contentHighlighted = setHighlight(contentWithoutEditableDiv);
                     div.innerHTML = contentHighlighted;
