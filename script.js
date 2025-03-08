@@ -81,8 +81,9 @@ function updateCodeHighlight(){
         });
     }
 }
+
 function setHighlight(el){
-    const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$]|(&gt;)|(&lt;)/g;   // symbols "><" there no like that in the code are &gt; and &lt;
+    const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$\.]|(&gt;)|(&lt;)/g;   // symbols "><" there no like that in the code are &gt; and &lt;
     const stringRegex = /["'`](.*?)["'`]/g;
     const commentRegex = /(\/\/.*?<br>)|(\/\/.*\s)|(\/\*[\s\S]*?\*\/)/g;
 
@@ -100,7 +101,7 @@ function keywordHighlight(code){
     let codeHTML = code;
     for(const keyword of keywords){
         const regexKeyword = new RegExp(`(?<!<[^>]*)\\b${keyword}\\b(?!([^<]*>))`, "g");
-                if(codeHTML.includes(keyword)){
+        if(codeHTML.includes(keyword)){
             codeHTML = codeHTML.replace(regexKeyword, `<span class="highlight-keyword">${keyword}</span>`);
         }
     }
@@ -109,7 +110,7 @@ function keywordHighlight(code){
 }
 
 function methodHighlight(code){
-    const methodRegex = /\w+\.\w+\(/g; //returns "console.log("
+    const methodRegex = /\.\w+\(/g; //returns "console.log("
     const matchMethod = code.match(methodRegex);
     let codeHTML = code;
 
