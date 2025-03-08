@@ -25,20 +25,42 @@ function updateCodeHighlight(){
                 //if user put contenteditable on the code, then we need make the content highlighted editable
                 //then we need to make a div with the content of the element and highlight it
                 //if dont a br, the html element will be empty and the code content will not be selected then no highlighted code will be shown
-                el.appendChild(document.createElement("BR"));
+                const br = document.createElement("br");
+
+                if(el.innerHTML == ""){
+                    el.appendChild(br);
+                }
+
                 el.appendChild(document.createElement("DIV"));
 
                 const div = el.querySelector("div");
-                div.innerHTML = el.textContent;
+                div.innerHTML = el.innerHTML;
                 div.innerHTML = setHighlight(div.textContent);
                 div.classList.add("highlighted-code");
-                
-                //what is being editable is the element that has the contenteditable attribute and we get that content constantly to put it highlighted on the div that show the code, because it works with a div that be behind the element and the principal element it is in front but with content color transparent, per shows only the div with the highlighted code
-                el.addEventListener("input", ()=>{
-                    div.innerHTML = getContentHighlightedWithoutHighlightedDiv(el);
-                })     
+                div.setAttribute("contenteditable", "false");
+                const highlightCodeDiv = el.querySelector(".highlighted-code"); 
 
-                el.addEventListener("keypress", (event) => {
+                //what is being editable is the element that has the contenteditable attribute and we get that content constantly to put it highlighted on the div that show the code, because it works with a div that be behind the element and the principal element it is in front but with content color transparent, per shows only the div with the highlighted code
+                const getContentHighlightedWithoutHighlightedDiv = (el)=>{
+                    //search for the content execept the highlighted-code class this we can search divs with br too
+                    const contentRegex = /((?:[^<]|<(?!\/?div\b[^>]*\bclass\s*=\s*["'].*?\bhighlighted-code\b.*?["'][^>]*\bcontenteditable\b[^>]*>))*)/
+                    const contentWithoutEditableDiv = el.innerHTML.match(contentRegex)[0];  
+                    const contentHighlighted = setHighlight(contentWithoutEditableDiv);
+                    return contentHighlighted;
+                }
+
+                el.addEventListener("input", ()=>{
+                    const contentRegex = /((?:[^<]|<(?!\/?div\b[^>]*\bclass\s*=\s*["'].*?\bhighlighted-code\b.*?["'][^>]*\bcontenteditable\b[^>]*>))*)/
+                    const contentWithoutEditableDiv = el.innerHTML.match(contentRegex)[0];  
+                    
+                    //we cant live the element empty, becuase it wont be nothing to work with the highlighted code
+                    if(el.innerHTML == "") el.insertBefore(highlightCodeDiv, el.lastChild);
+                    if(contentWithoutEditableDiv == "") el.insertBefore(br, el.firstChild);
+
+                    highlightCodeDiv.innerHTML = getContentHighlightedWithoutHighlightedDiv(el);
+                }) 
+
+                el.addEventListener("keydown", (event) => {
                     if (event.key === "Enter") {
                         event.preventDefault();
                         const selection = window.getSelection();
@@ -50,7 +72,8 @@ function updateCodeHighlight(){
                         selection.addRange(range);
                         //event input dont detect enter key
                         div.innerHTML = getContentHighlightedWithoutHighlightedDiv(el);
-                }})             
+                }})   
+
             }else {
                 el.innerHTML = setHighlight(el.textContent);
                 el.style.color = "var(--based-color-text)";
@@ -61,8 +84,7 @@ function updateCodeHighlight(){
 function setHighlight(el){
     const symbolRegex = /(?<!<[^>]*)[;=+\-{}\[\]\(\)$]|(&gt;)|(&lt;)/g;   // symbols "><" there no like that in the code are &gt; and &lt;
     const stringRegex = /["'`](.*?)["'`]/g;
-    // const commentRegex = /\/\/.*|\/\*[\s\S]*?\*\//g;
-    const commentRegex = /\/\/.*?<br>/g;
+    const commentRegex = /(\/\/.*?<br>)|(\/\/.*\s)|(\/\*[\s\S]*?\*\/)/g;
 
     //get all codes and highlight them
     const stringHTMLCodeHighlight = simpleHighlight(el, stringRegex, "string");
@@ -109,12 +131,4 @@ function simpleHighlight(code, regex, highlightName){
     codeHTML = codeHTML.replace(regex, match => `<span class="highlight-${highlightName}">${match}</span>`);
 
     return codeHTML
-}
-
-function getContentHighlightedWithoutHighlightedDiv(el){
-    //search for the content execept the highlighted-code class this we can search divs with br too
-    const contentRegex = /((?:[^<]|<(?!\/?div\b[^>]*\bclass\s*=\s*["'].*?\bhighlighted-code\b.*?["'][^>]*>))*)/
-    const contentWithoutEditableDiv = el.innerHTML.match(contentRegex)[0];  
-    const contentHighlighted = setHighlight(contentWithoutEditableDiv);
-    return contentHighlighted;
 }

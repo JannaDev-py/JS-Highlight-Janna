@@ -13,8 +13,12 @@
     font-family: monospace;
     position: relative;
     color: transparent;
-    caret-color: #fff;
     overflow: hidden;
+    min-width: 400px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    caret-color: #fff;
 }
 .code .highlighted-code{
     position: absolute;
@@ -29,6 +33,8 @@
     left: 0;
     z-index: -1;
     color: var(--based-color-text);
+    caret-color: transparent;
+    background: #444;
 }
 
 .highlight-keyword{
