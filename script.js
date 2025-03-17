@@ -16,6 +16,26 @@ const keywords = [
 
 document.addEventListener("DOMContentLoaded", ()=>{ updateCodeHighlight()});
 
+function getTextContentWithSpacesAndLineBreaks(element) {
+    let htmlContent = element.innerHTML;
+
+    let tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+
+    let textContent = '';
+    tempDiv.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            textContent += node.textContent;
+        } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'br') {
+            textContent += '<br>';
+        } else {
+            textContent += getTextContentWithSpacesAndLineBreaks(node);
+        }
+    });
+
+    return textContent;
+}
+
 function updateCodeHighlight(){
     const code = document.querySelectorAll(".code"); //make an node list for all the code elements
 
@@ -27,15 +47,13 @@ function updateCodeHighlight(){
                 //if dont a br, the html element will be empty and the code content will not be selected then no highlighted code will be shown
                 const br = document.createElement("br");
 
-                if(el.innerHTML == ""){
-                    el.appendChild(br);
-                }
+                el.appendChild(br);
 
                 el.appendChild(document.createElement("DIV"));
 
                 const div = el.querySelector("div");
                 div.innerHTML = el.innerHTML;
-                div.innerHTML = setHighlight(div.textContent);
+                div.innerHTML = setHighlight(div.innerHTML.replace(/<div><\/div>/g, "")); //dont get div added to element
                 div.classList.add("highlighted-code");
                 div.setAttribute("contenteditable", "false");
                 const highlightCodeDiv = el.querySelector(".highlighted-code"); 
@@ -134,3 +152,4 @@ function simpleHighlight(code, regex, highlightName){
 
     return codeHTML
 }
+
